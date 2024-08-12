@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gexingw.spring.mybatis.mapper.UserMapper">
+
+    <select id="getById" resultMap="userInfoResultMap">
+        select user.id, username, role_id, role.code as roleCode, role.name as roleName
+        from user
+                 left join role on role.id = user.role_id
+        where user.id = #{id}
+    </select>
+
+    <resultMap id="userInfoResultMap" type="com.gexingw.spring.mybatis.vo.UserVO">
+        <result property="id" column="id"/>
+        <result property="name" column="username"/>
+        <association property="role" javaType="com.gexingw.spring.mybatis.vo.UserVO$Role">
+            <result property="code" column="roleCode"/>
+            <result property="name" column="roleName"/>
+        </association>
+    </resultMap>
+
+</mapper>
+

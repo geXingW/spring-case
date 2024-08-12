@@ -1,0 +1,10 @@
+package com.gexingw.transaction.message.support;
+
+import com.gexingw.transaction.message.event.DomainEvent;
+
+/**
+ * @author GeXingW
+ */
+public interface SyncEvent extends DomainEvent {
+
+}

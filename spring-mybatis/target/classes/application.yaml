@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://homestead:3306/java_example?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: homestead
+    password: secret
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
