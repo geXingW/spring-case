@@ -1,4 +1,4 @@
-package com.gexingw.springrocketmq;
+package com.gexingw.spring.rocketmq;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

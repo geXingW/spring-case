@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: spring-rocketmq
+
+rocketmq:
+#  name-server: local-220:9876
+  name-server: node-220:9876
+  producer:
+    group: user-group
