@@ -1,21 +1,20 @@
 package com.gexingw.spring.rocketmq.adapter.producer;
 
-import com.gexingw.spring.rocketmq.message.OrderCreatedMessage;
-import com.gexingw.spring.rocketmq.message.OrderDeliveredMessage;
-import com.gexingw.spring.rocketmq.message.OrderPayedMessage;
-import com.gexingw.spring.rocketmq.message.UserMessage;
+import com.gexingw.spring.rocketmq.message.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.MessageConst;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author GeXingW
@@ -52,16 +51,75 @@ public class ProducerAdapter {
 
     @GetMapping("orderly")
     public void orderly() {
-        for (long i = 0; i < 10; i++) {
-            String key = String.valueOf(i);
-            OrderCreatedMessage createdMessage = new OrderCreatedMessage(i);
-            rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.ORDER_TOPIC_1, createdMessage, key);
-            OrderPayedMessage payedMessage = new OrderPayedMessage(i);
-            rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.ORDER_TOPIC_1, payedMessage, key);
-            OrderDeliveredMessage deliveredMessage = new OrderDeliveredMessage(i);
-            rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.ORDER_TOPIC_1, deliveredMessage, key);
-            System.out.println("顺序消息：order-" + i);
-        }
+        new Thread(() -> {
+            for (long i = 0; i < 10; i = i + 2) {
+                String key = String.valueOf(i);
+                OrderCreatedMessage createdMessage = new OrderCreatedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.TOPIC, createdMessage, key);
+                OrderPayedMessage payedMessage = new OrderPayedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderPayedMessage.TOPIC, payedMessage, key);
+                OrderDeliveredMessage deliveredMessage = new OrderDeliveredMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderDeliveredMessage.TOPIC, deliveredMessage, key);
+                System.out.println("顺序消息：order-" + i);
+            }
+        }).start();
+
+        new Thread(() -> {
+            for (long i = 1; i < 6; i = i + 2) {
+                String key = String.valueOf(i);
+                OrderCreatedMessage createdMessage = new OrderCreatedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.TOPIC, createdMessage, key);
+                OrderPayedMessage payedMessage = new OrderPayedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderPayedMessage.TOPIC, payedMessage, key);
+                OrderDeliveredMessage deliveredMessage = new OrderDeliveredMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderDeliveredMessage.TOPIC, deliveredMessage, key);
+                System.out.println("顺序消息：order-" + i);
+            }
+        }).start();
+    }
+
+    @GetMapping("tag")
+    public void tag() {
+//        rocketMQTemplate.set
+
+        new Thread(() -> {
+            for (long i = 0; i < 10; i = i + 2) {
+                String key = String.valueOf(i);
+                OrderCreatedMessage createdMessage = new OrderCreatedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.TOPIC, createdMessage, key);
+                OrderPayedMessage payedMessage = new OrderPayedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderPayedMessage.TOPIC, payedMessage, key);
+                OrderDeliveredMessage deliveredMessage = new OrderDeliveredMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderDeliveredMessage.TOPIC, deliveredMessage, key);
+                System.out.println("顺序消息：order-" + i);
+            }
+        }).start();
+
+        new Thread(() -> {
+            for (long i = 1; i < 6; i = i + 2) {
+                String key = String.valueOf(i);
+                OrderCreatedMessage createdMessage = new OrderCreatedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderCreatedMessage.TOPIC, createdMessage, key);
+                OrderPayedMessage payedMessage = new OrderPayedMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderPayedMessage.TOPIC, payedMessage, key);
+                OrderDeliveredMessage deliveredMessage = new OrderDeliveredMessage(i);
+                rocketMQTemplate.syncSendOrderly(OrderDeliveredMessage.TOPIC, deliveredMessage, key);
+                System.out.println("顺序消息：order-" + i);
+            }
+        }).start();
+    }
+
+    @GetMapping("batch")
+    public void batch() {
+//        List<OrderMessage> messages = new ArrayList<>();
+//        for (long i = 0; i < 10; i++) {
+//            messages.add(new OrderCreatedMessage(i));
+//            messages.add(new OrderPayedMessage(i));
+//            messages.add(new OrderDeliveredMessage(i));
+//        }
+//        Collection<OrderMessage> messages1 = messages;
+
+//        SendResult sendResult = rocketMQTemplate.syncSend(OrderMessage.ORDER_TOPIC_1, messages1);
     }
 
 }

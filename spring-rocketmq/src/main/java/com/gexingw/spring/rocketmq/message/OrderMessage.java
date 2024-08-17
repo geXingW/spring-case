@@ -9,7 +9,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class OrderMessage implements Serializable {
 
-    public final static String ORDER_TOPIC_1 = "ORDER-TOPIC-1";
+    public final static String TOPIC = "ORDER-TOPIC";
 
     private Long id;
 

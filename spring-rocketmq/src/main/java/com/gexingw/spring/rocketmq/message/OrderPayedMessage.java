@@ -7,10 +7,17 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class OrderPayedMessage extends OrderMessage {
+public class OrderPayedMessage implements Serializable {
+
+    public final static String TOPIC = "ORDER-TOPIC:payed";
+
+    private Long id;
+
+    private String message;
 
     public OrderPayedMessage(Long id) {
-        super(id, "payed");
+        this.id = id;
+        this.message = "Order-" + id;
     }
 
 }
